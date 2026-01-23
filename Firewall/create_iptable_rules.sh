@@ -14,15 +14,17 @@ for table in "${tables[@]}"; do
 done
 
 #====== Default Rules ======
-iptables -P INPUT -j DROP
-iptables -P OUTPUT -j ACCEPT
-iptables -P FORWARD -j DROP
+sudo iptables -P INPUT -j DROP
+sudo iptables -P OUTPUT -j ACCEPT
+sudo iptables -P FORWARD -j DROP
 
-ip6tables -P INPUT -j DROP
-ip6tables -P OUTPUT -j DROP
-ip6tables -P FORWARD -j DROP
+sudo ip6tables -P INPUT -j DROP
+sudo ip6tables -P OUTPUT -j DROP
+sudo ip6tables -P FORWARD -j DROP
 
-iptables -A INPUT -i lo -j ACCEPT #Grant local port access
-iptables -A INPUT -m conntrack ESTABLISHED, RELATED -j ACCEPT
+sudo iptables -A INPUT -i lo -j ACCEPT #Grant local port access
+sudo iptables -A INPUT -m conntrack ESTABLISHED, RELATED -j ACCEPT #Allow full duplex connections and related relations from other connections
+sudo iptables -A INPUT -m conntrack INVALID -j DROP #Deny strange connections
 
 #====== SSH ======
+sudo iptables -A INPUT -p 54321 -i "wlan0" -j ACCEPT
