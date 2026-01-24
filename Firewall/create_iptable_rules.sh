@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#====== VARIABLES ======
 tables=(filter nat mangle raw security)
 
 #====== Clean Rules ======
@@ -14,17 +15,17 @@ for table in "${tables[@]}"; do
 done
 
 #====== Default Rules ======
-sudo iptables -P INPUT -j DROP
-sudo iptables -P OUTPUT -j ACCEPT
-sudo iptables -P FORWARD -j DROP
+sudo iptables -P INPUT DROP
+sudo iptables -P OUTPUT ACCEPT
+sudo iptables -P FORWARD DROP
 
-sudo ip6tables -P INPUT -j DROP
-sudo ip6tables -P OUTPUT -j DROP
-sudo ip6tables -P FORWARD -j DROP
+sudo ip6tables -P INPUT DROP
+sudo ip6tables -P OUTPUT DROP
+sudo ip6tables -P FORWARD DROP
 
 sudo iptables -A INPUT -i lo -j ACCEPT #Grant local port access
-sudo iptables -A INPUT -m conntrack ESTABLISHED, RELATED -j ACCEPT #Allow full duplex connections and related relations from other connections
-sudo iptables -A INPUT -m conntrack INVALID -j DROP #Deny strange connections
+sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT #Allow full duplex connections and related relations from other connections
+sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP #Deny strange connections
 
 #====== SSH ======
-sudo iptables -A INPUT -p 54321 -i "wlan0" -j ACCEPT
+sudo iptables -t filter -A INPUT -i wlan0 -p tcp --dport 54321 -j ACCEPT
