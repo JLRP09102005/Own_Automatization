@@ -73,9 +73,9 @@ print_main_menu()
                                         
     ═══════════════════════════════════════
     [1] → Clear Rules Menu
-    [2] → Add Rules  
-    [3] → Show Status
-    [4] → Save Config
+    [2] → Add Rules Menu
+    [3] → Create Service
+    [4] → Show Service Status
     [5] → Restore Config
     [0] → Exit
     ═══════════════════════════════════════
@@ -102,12 +102,32 @@ MENU
     echo -e "${NC}"
 }
 
+print_rules_menu()
+{
+    echo -e "${FG_GREEN}"
+    cat << 'MENU'
+     _____ _                        _ _ 
+    |  ___(_)_ __ _____      ____ _| | |
+    | |_  | | '__/ _ \ \ /\ / / _` | | |
+    |  _| | | | |  __/\ V  V / (_| | | |
+    |_|   |_|_|  \___| \_/\_/ \__,_|_|_|
+                                        
+    ═══════════════════════════════════════
+    [1] → Add Default Rules
+    [2] → Add Quick Rule
+    [3] → Add Specific Rule
+    [0] → Exit
+    ═══════════════════════════════════════
+MENU
+    echo -e "${NC}"
+}
+
 #Arg1 --> Text / Arg2 --> Wait Time
 print_info()
 {
     local wait_time="${2:-0}"
 
-    printf "${FG_BLUE}INFO${NC}: %s\n" "$1" >&2
+    printf "${BOLD}${FG_BLUE}INFO${NC}: %s\n" "$1" >&2
     sleep "$wait_time"
 }
 
@@ -116,7 +136,7 @@ print_warning()
 {
     local wait_time="${2:-0}"
 
-    printf "${FG_YELLOW}WARNING${NC}: %s\n" "$1" >&2
+    printf "${BOLD}${FG_YELLOW}WARNING${NC}: %s\n" "$1" >&2
     sleep "$wait_time"
 }
 
@@ -125,12 +145,94 @@ print_error()
 {
     local wait_time="${2:-0}"
 
-    printf "${FG_RED}ERROR${NC}: %s\n" "$1" >&2
+    printf "${BOLD}${FG_RED}ERROR${NC}: %s\n" "$1" >&2
     sleep "$wait_time"
 }
 
-#====== FILES ======
-iptables_string_creator()
+#====== IPTABLES FUNCTIONS ======
+##Rule Writer
+write_rule()
 {
-    echo "hola"
+    if [ "$#" -gt 0 ]; then
+        printf "$@" >> "$SYS_FILE"
+    else
+        cat >> "$SYS_FILE"
+    fi
+}
+
+##Clean Rules
+iptables_clean_all_rules()
+{
+    write_rule << 'CONTENT'
+#Clean All Firewall Rules
+tables=(filter nat mangle raw security)
+for table in "${tables[@]}"; do
+    sudo iptables -t "$table" -F
+    sudo iptables -t "$table" -X
+    sudo iptables -t "$table" -Z
+
+    sudo ip6tables -t "$table" -F
+    sudo ip6tables -t "$table" -X
+    sudo ip6tables -t "$table" -Z
+done
+CONTENT
+}
+
+##Default no permisssive rules
+iptables_default_rules()
+{
+    write_rule << 'CONTENT'
+#Default rules
+sudo iptables -P INPUT DROP
+sudo iptables -P OUTPUT ACCEPT
+sudo iptables -P FORWARD DROP
+
+sudo ip6tables -P INPUT DROP
+sudo ip6tables -P OUTPUT DROP
+sudo ip6tables -P FORWARD DROP
+
+sudo iptables -A INPUT -i lo -j ACCEPT
+sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+CONTENT
+}
+
+##Firewall rules assistant
+iptables_rule_wizzard()
+{
+    local table action chain target protocol port source dest interface_in interface_out
+    local modules=""
+    local rule=""
+
+    echo ""
+    printf "${FG_CYAN}=== Firewall Rules Assistant ===${NC}"
+    echo ""
+
+    #Select table
+    read -r -p "Select Table (filter/nat/mangle/raw/security) [filter]: " table
+    table="${table:-filter}"
+
+    #Select action
+    read -r -p "Select Action (A=add, I=insert, D=delete) [A]: " action
+    action="${action:-A}"
+    action="-${action^^}"
+
+    #Select chain
+    read -r -p "Select Chain (INPUT, OUTPUT, FORWARD, custom) [INPUT]: " chain
+    chain="${chain:-INPUT}"
+
+    #Select Target
+    
+}
+
+#====== FILE FUNCTIONS ======
+reset_sys_file()
+{
+    if [ -e "$SYS_FILE" ]; then
+        echo "existe"
+        truncate -s 0 "$SYS_FILE"
+    else
+        touch "$SYS_FILE"
+    fi
+    printf "#!/bin/bash\n" > "$SYS_FILE"
 }
