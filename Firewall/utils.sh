@@ -60,6 +60,13 @@ check_only_numbers()
     [[ "$1" =~ ^[0-9]+$ ]]
 }
 
+check_yes_no_response()
+{
+    local response="${1,,}"
+
+    [[ "$response" =~ ^y(es)?$ ]]
+}
+
 #====== INTERFACE ======
 print_main_menu()
 {
@@ -200,9 +207,10 @@ CONTENT
 ##Firewall rules assistant
 iptables_rule_wizzard()
 {
-    local table action chain target protocol port source dest interface_in interface_out
+    local table action chain target protocol port ip_source ip_dest interface_in interface_out dport sport target
     local modules=""
     local rule=""
+    local local_option=-1
 
     echo ""
     printf "${FG_CYAN}=== Firewall Rules Assistant ===${NC}"
@@ -221,8 +229,103 @@ iptables_rule_wizzard()
     read -r -p "Select Chain (INPUT, OUTPUT, FORWARD, custom) [INPUT]: " chain
     chain="${chain:-INPUT}"
 
-    #Select Target
-    
+    #Select Protocol
+    read -r -p "Select protocol (tcp/udp/icmp/Enter to skip): " procotol
+    if [ -n "$protocol" ]; then
+        protocol="-p protocol"
+    else
+        protocol=""
+    fi
+
+    #Ports (only if there is a protocol)
+    if [ -n "$protocol" ]; then
+        #Ask for a destination port/s
+        read -r -p "¿Multi destination port? (y/n) [n]" local_option
+        if check_yes_no_response "$local_option"; then
+            read -r -p "Destination ports (ej: 80,443,8080): " dport
+
+            modules="$modules -m multiport --dports $dport"
+            dport=""
+        else
+            read -r -p "¿Destination port? (ENTER if not): " dport
+            [[ -n "$dport" ]] && dport="--dport $dport"
+        fi
+
+        #Asks for a source port/s
+        read -r -p "¿Multi source port? (y/n) [n]" local_option
+        if check_yes_no_response "$local_option"; then
+            read -r -p "Source ports (ej: 80,443,8080): " sport
+
+            modules="$modules -m multiport --sports $sport"
+            sport=""
+        else
+            read -r -p "¿Source port? (ENTER if not): " sport
+            [[ -n "$sport" ]] && sport="--sport $sport"
+        fi
+    fi
+
+    #IP source and destination
+    read -r -p "¿Source IP/NET? (ENTER if not): " ip_source
+    [[ -n "$ip_source" ]] && ip_source="-s $ip_source"
+
+    read -r -p "¿Destination IP/NET? (ENTER if not): " ip_dest
+    [[ -n "$ip_dest" ]] && ip_dest="-d $ip_dest"
+
+    #Interface source and destination
+    read -r -p "¿Source interface? (ENTER if not): " interface_in
+    [[ -n "$interface_in" ]] && interface_in="-i $interface_in"
+
+    read -r -p "¿Destination interface? (ENTER if not): " interface_out
+    [[ -n "$interface_out" ]] && interface_out="-o $interface_out"
+
+    #Select target
+    local target_opts log_prefix log_level
+
+    read -r -p "Select Target (ACCEPT, DROP, REJECT, DNAT, SNAT, MASQUERADE, LOG, RETURN) [DROP]: " target
+    target="${target:-DROP}"
+    target="-j ${target^^}"
+
+    if [ "$target" == "REJECT" ]; then
+
+        read -r -p "Reject message [icmp-port-unreachable]: " target_opts
+        target_opts="${target_opts:-icmp-port-unreachable}"
+        target_opts="--reject-with $target_opts"
+
+    elif [ "$target" == "LOG" ]; then
+
+        read -r -p "Log prefix [Firewall]: " log_prefix
+        log_prefix="${log_prefix:-Firewall}"
+
+        read -r -p "Log level (0-7) [4]: " log_level
+        log_level="${log_level:-4}"
+
+        target_opts="--log-prefix \"$log_prefix: \" --log-level $log_level"
+
+    elif [ "$target" == "DNAT" ]; then
+
+        read -r -p "¿DNAT destinaton? (ej: 192.168.0.4:80): " target_opts
+        [[ -n "$target_opts" ]] && target_opts="--to-destination $target_opts"
+
+    elif [ "$target" == "SNAT" ]; then
+
+        read -r -p "¿SNAT destination? (ej: 201.33.7.67:1024-65000): " target_opts
+        [[ -n "$target_opts" ]] && target_opts="--to-source $target_opts"
+
+    fi
+
+    #Rule Construction
+    rule="iptables"
+    [[ "$table" != "filter" ]] && rule="$rule -t $table"
+    rule="$rule $action $chain"
+    [[ -n "$protocol" ]] && rule="$rule $protocol"
+    [[ -n "$dport" ]] && rule="$rule $dport"
+    [[ -n "$sport" ]] && rule="$rule $sport"
+    [[ -n "$ip_dest" ]] && rule="$rule $ip_dest"
+    [[ -n "$ip_source" ]] && rule="$rule $ip_source"
+    [[ -n "$interface_in" ]] && rule="$rule $interface_in"
+    [[ -n "$interface_out" ]] && rule="$rule $interface_out"
+    rule="$rule $target"
+    [[ -n "$target_opts" ]] && rule="$rule $target_opts"
 }
 
 #====== FILE FUNCTIONS ======
