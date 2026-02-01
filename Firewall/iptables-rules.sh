@@ -67,6 +67,6 @@ for table in "${tables[@]}"; do
     ip6tables -w 10 -t "$table" -P PREROUTING DROP >"/dev/null" 2>&1
     ip6tables -w 10 -t "$table" -P POSROUTING DROP >"/dev/null" 2>&1
 
-done
+    exit 0
 
-exit 0
+done

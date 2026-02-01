@@ -85,7 +85,7 @@ rules_menu()
         elif [ "$option" -eq 2 ]; then
             print_info "2" 2
         elif [ "$option" -eq 3 ]; then
-            print_info "3" 2
+            iptables_rule_wizzard
         fi
 
     done

@@ -173,14 +173,25 @@ iptables_clean_all_rules()
     write_rule << 'CONTENT'
 #Clean All Firewall Rules
 tables=(filter nat mangle raw security)
+#====== DEFAULT POLICY ======
 for table in "${tables[@]}"; do
-    sudo iptables -t "$table" -F
-    sudo iptables -t "$table" -X
-    sudo iptables -t "$table" -Z
 
-    sudo ip6tables -t "$table" -F
-    sudo ip6tables -t "$table" -X
-    sudo ip6tables -t "$table" -Z
+    #default policies ipv4
+    iptables -w 10 -t "$table" -P OUTPUT DROP >"/dev/null" 2>&1
+    iptables -w 10 -t "$table" -P INPUT DROP >"/dev/null" 2>&1
+    iptables -w 10 -t "$table" -P FORWARD DROP >"/dev/null" 2>&1
+    iptables -w 10 -t "$table" -P PREROUTING DROP >"/dev/null" 2>&1
+    iptables -w 10 -t "$table" -P POSROUTING DROP >"/dev/null" 2>&1
+
+    #default policies ipv6
+    ip6tables -w 10 -t "$table" -P OUTPUT DROP >"/dev/null" 2>&1
+    ip6tables -w 10 -t "$table" -P INPUT DROP >"/dev/null" 2>&1
+    ip6tables -w 10 -t "$table" -P FORWARD DROP >"/dev/null" 2>&1
+    ip6tables -w 10 -t "$table" -P PREROUTING DROP >"/dev/null" 2>&1
+    ip6tables -w 10 -t "$table" -P POSROUTING DROP >"/dev/null" 2>&1
+
+    exit 0
+
 done
 CONTENT
 }
@@ -189,18 +200,13 @@ CONTENT
 iptables_default_rules()
 {
     write_rule << 'CONTENT'
-#Default rules
-sudo iptables -P INPUT DROP
-sudo iptables -P OUTPUT ACCEPT
-sudo iptables -P FORWARD DROP
+#====== BASIC/NEEDED POLICIES ======
+iptables -I INPUT 1 -i lo -j ACCEPT
+iptables -I OUTPUT 1 -o lo -j ACCEPT
 
-sudo ip6tables -P INPUT DROP
-sudo ip6tables -P OUTPUT DROP
-sudo ip6tables -P FORWARD DROP
-
-sudo iptables -A INPUT -i lo -j ACCEPT
-sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+#====== ESTABLISHED-RELATED ======
+iptables -I INPUT 2 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+iptables -I OUTPUT 2 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 CONTENT
 }
 
@@ -326,6 +332,18 @@ iptables_rule_wizzard()
     [[ -n "$interface_out" ]] && rule="$rule $interface_out"
     rule="$rule $target"
     [[ -n "$target_opts" ]] && rule="$rule $target_opts"
+
+    rule=$(echo "$rule" | tr -s ' ')
+
+    echo ""
+    printf "${FG_BYELLOW}$rule${NC}\n"
+    read -r -p "Is This rule correct? (y/n) [n]: " local_option
+    local_option="${local_option:-n}"
+    if check_yes_no_response "$local_option"; then
+        echo "Write the rules"
+    else
+        printf_warning "Deleting Rule..." 2
+    fi
 }
 
 #====== FILE FUNCTIONS ======
