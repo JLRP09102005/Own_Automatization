@@ -1,7 +1,12 @@
 #!/bin/bash
 
 #====== DIRECTORIES ======
-SYS_FILE="$BASE_DIR/sys_firewall_rules.sh"
+CONFIG_BACKUPS_DIR="$BASE_DIR/config_backups/"
+SERVICE_FILES_DIR="$BASE_DIR/service_files/"
+IPTABLES_FILES_DIR="$BASE_DIR/iptables_files/"
+SYS_FILE="$IPTABLES_FILES_DIR/sys_firewall_rules.sh"
+IPTABLES_FILE="$BASE_DIR/iptables-utils.sh"
+SERVICE_FILE="$BASE_DIR/service_utils.sh"
 
 #====== COLORS ======
 # Reset
@@ -164,7 +169,7 @@ reset_sys_file()
         echo "existe"
         truncate -s 0 "$SYS_FILE"
     else
-        touch "$SYS_FILE"
+        mkdir -p "$IPTABLES_FILES_DIR" && touch "$SYS_FILE"
     fi
     printf "#!/bin/bash\n" > "$SYS_FILE"
 }

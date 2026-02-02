@@ -7,6 +7,8 @@ tables=(filter nat mangle raw security)
 
 #====== SOURCE FILES ======
 source "$BASE_DIR/utils.sh"
+source "$IPTABLES_FILE"
+source "$SERVICE_FILE"
 
 #====== FUNCTIONS ======
 main_menu()
