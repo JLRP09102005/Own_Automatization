@@ -95,6 +95,26 @@ rules_menu()
     option=-1
 }
 
+services_menu()
+{
+    while [ "$option" -ne 0 ]; do
+        clear
+        print_services_menu
+
+        read -r -p "Select Option: " option
+
+        if ! check_only_numbers "$option"; then
+            print_error "Make sure that you selected a correct option" 2
+            option=-1
+            continue
+        fi
+
+        if [ "$option" -eq 1 ]; then
+            echo "call files function"
+        fi
+    done
+}
+
 #Check if exists systemd archive, if exists clean it, fi not create it
 reset_sys_file
 

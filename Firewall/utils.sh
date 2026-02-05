@@ -135,6 +135,31 @@ MENU
     echo -e "${NC}"
 }
 
+print_services_menu()
+{
+    echo -e "${FG_GREEN}"
+    cat << 'MENU'
+     _____ _                        _ _ 
+    |  ___(_)_ __ _____      ____ _| | |
+    | |_  | | '__/ _ \ \ /\ / / _` | | |
+    |  _| | | | |  __/\ V  V / (_| | | |
+    |_|   |_|_|  \___| \_/\_/ \__,_|_|_|
+                                        
+    ═══════════════════════════════════════
+    [1] → Move iptables file to system
+    [2] → Create default service for iptables file
+    [3] → Create personalized service
+    [3] → Remove service for iptables file
+    [3] → Start Service
+    [3] → Stop Service
+    [3] → Enable Service
+    [3] → Disable Service
+    [0] → Exit
+    ═══════════════════════════════════════
+MENU
+    echo -e "${NC}"
+}
+
 #Arg1 --> Text / Arg2 --> Wait Time
 print_info()
 {
