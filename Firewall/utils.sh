@@ -5,8 +5,9 @@ CONFIG_BACKUPS_DIR="$BASE_DIR/config_backups/"
 SERVICE_FILES_DIR="$BASE_DIR/service_files/"
 IPTABLES_FILES_DIR="$BASE_DIR/iptables_files/"
 SYS_FILE="$IPTABLES_FILES_DIR/sys_firewall_rules.sh"
-IPTABLES_FILE="$BASE_DIR/iptables-utils.sh"
-SERVICE_FILE="$BASE_DIR/service_utils.sh"
+SERVICE_FILE="$SERVICE_FILES_DIR/iptables-rules.service"
+IPTABLES_SCRIPT="$BASE_DIR/iptables-utils.sh"
+SERVICE_SCRIPT="$BASE_DIR/service_utils.sh"
 
 #====== COLORS ======
 # Reset
@@ -149,11 +150,26 @@ print_services_menu()
     [1] → Move iptables file to system
     [2] → Create default service for iptables file
     [3] → Create personalized service
-    [3] → Remove service for iptables file
-    [3] → Start Service
-    [3] → Stop Service
-    [3] → Enable Service
-    [3] → Disable Service
+    [4] → Remove service for iptables file
+    [5] → Start Service
+    [6] → Stop Service
+    [7] → Enable Service
+    [8] → Disable Service
+    [0] → Exit
+    ═══════════════════════════════════════
+MENU
+    echo -e "${NC}"
+}
+
+print_services_wizzard_menu()
+{
+    echo -e "${FG_GREEN}"
+    cat << 'MENU'
+    ═══════════════════════════════════════
+    [1] → Add Section
+    [2] → Add Section Attributes
+    [3] → Remove Section
+    [3] → Remove Section Attributes
     [0] → Exit
     ═══════════════════════════════════════
 MENU
@@ -191,10 +207,18 @@ print_error()
 reset_sys_file()
 {
     if [ -e "$SYS_FILE" ]; then
-        echo "existe"
         truncate -s 0 "$SYS_FILE"
     else
         mkdir -p "$IPTABLES_FILES_DIR" && touch "$SYS_FILE"
     fi
     printf "#!/bin/bash\n" > "$SYS_FILE"
+}
+
+reset_service_file()
+{
+    if [ -e "$SERVICE_FILE" ]; then
+        truncate -s "$SERVICE_FILE"
+    else
+        mkdir -p "$SERVICE_FILES_DIR" && touch "$SERVICE_FILE"
+    fi
 }

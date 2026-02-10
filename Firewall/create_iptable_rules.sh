@@ -7,8 +7,8 @@ tables=(filter nat mangle raw security)
 
 #====== SOURCE FILES ======
 source "$BASE_DIR/utils.sh"
-source "$IPTABLES_FILE"
-source "$SERVICE_FILE"
+source "$IPTABLES_SCRIPT"
+source "$SERVICE_SCRIPT"
 
 #====== FUNCTIONS ======
 main_menu()
@@ -29,8 +29,8 @@ main_menu()
             clean_menu
         elif [ "$option" -eq 2 ]; then
             rules_menu
-        elif [ "$option" -eq 2 ]; then
-            print_info "2" 2
+        elif [ "$option" -eq 3 ]; then
+            services_menu
         fi
 
     done
@@ -111,12 +111,17 @@ services_menu()
 
         if [ "$option" -eq 1 ]; then
             echo "call files function"
+        elif [ "$option" -eq 2 ]; then
+            create_default_service
         fi
     done
 }
 
-#Check if exists systemd archive, if exists clean it, fi not create it
+#Check if exists iptables file, if exists clean it, if not create it
 reset_sys_file
+
+#Check if exists service file, if exists clean it, if not create it
+reset_service_file
 
 #Starts the program
 main_menu
