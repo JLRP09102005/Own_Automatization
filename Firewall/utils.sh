@@ -176,8 +176,8 @@ print_service_personalization()
     [2] → Configure [Service]
     [3] → Configure [Install]
     ---------------------------------------
-    [3] → File Preview
-    [3] → Save File
+    [4] → File Preview
+    [5] → Save File
     [0] → Exit
     ═══════════════════════════════════════
 MENU

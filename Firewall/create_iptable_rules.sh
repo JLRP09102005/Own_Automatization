@@ -3,7 +3,7 @@
 #====== VARIABLES ======
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 option=-1
-tables=(filter nat mangle raw security)
+tables=(filter)
 
 #====== SOURCE FILES ======
 source "$BASE_DIR/utils.sh"
