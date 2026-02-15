@@ -9,6 +9,11 @@ SERVICE_FILE="$SERVICE_FILES_DIR/iptables-rules.service"
 IPTABLES_SCRIPT="$BASE_DIR/iptables-utils.sh"
 SERVICE_SCRIPT="$BASE_DIR/service_utils.sh"
 
+##User Save Directories
+USER_SERVICE_SAVE="~/.config/systemd/user/"
+##System Save Directories
+SYSTEM_SERVICE_SAVE="/etc/systemd/user/"
+
 #====== COLORS ======
 # Reset
 NC="\033[0m"
@@ -155,21 +160,24 @@ print_services_menu()
     [6] → Stop Service
     [7] → Enable Service
     [8] → Disable Service
+    [9] → File Preview
     [0] → Exit
     ═══════════════════════════════════════
 MENU
     echo -e "${NC}"
 }
 
-print_services_wizzard_menu()
+print_service_personalization()
 {
     echo -e "${FG_GREEN}"
     cat << 'MENU'
     ═══════════════════════════════════════
-    [1] → Add Section
-    [2] → Add Section Attributes
-    [3] → Remove Section
-    [3] → Remove Section Attributes
+    [1] → Configure [Unit]
+    [2] → Configure [Service]
+    [3] → Configure [Install]
+    ---------------------------------------
+    [3] → File Preview
+    [3] → Save File
     [0] → Exit
     ═══════════════════════════════════════
 MENU
