@@ -96,7 +96,7 @@ configure_unit_wizzard()
         [[ -n "$user_response" ]] && unit="$unit Requires=$user_response"
 
         read -r -p "Add Overridable Requirement [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit="$unit RequiresOberridable=$user_response"
+        [[ -n "$user_response" ]] && unit="$unit RequiresOverridable=$user_response"
 
         read -r -p "Add Requisite [ENTER to skip]: " user_response
         [[ -n "$user_response" ]] && unit="$unit Requisite=$user_response"
@@ -114,7 +114,7 @@ configure_unit_wizzard()
         [[ -n "$user_response" ]] && unit="$unit PartOf=$user_response"
 
         read -r -p "Add Requieres Mounts For [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit="$unit RequiresMountsFor$user_response"
+        [[ -n "$user_response" ]] && unit="$unit RequiresMountsFor=$user_response"
 
         read -r -p "Add Joins Namespace Of [ENTER to skip]: " user_response
         [[ -n "$user_response" ]] && unit="$unit JoinsNamespaceOf=$user_response"
@@ -260,7 +260,7 @@ configure_unit_wizzard()
         [[ -n "$user_response" ]] && unit="$unit StopWhenUnneeded=$user_response"
 
         read -r -p "Add Ignore On Isolate [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit="$unit Ignore On Isolate=$user_response"
+        [[ -n "$user_response" ]] && unit="$unit IgnoreOnIsolate=$user_response"
 
         read -r -p "Add Ignore On Snapshot [ENTER to skip]: " user_response
         [[ -n "$user_response" ]] && unit="$unit IgnoreOnSnapshot=$user_response"

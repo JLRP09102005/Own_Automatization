@@ -149,9 +149,9 @@ service_personalization_menu()
 
             read -r -p "¿Save as \"root\" or \"user\"?: (root/user)" save_option
             if [ "$save_option" = "root" ]; then
-                sudo copy "$SERVICE_FILE" "$SYSTEM_SERVICE_SAVE"
+                sudo cp "$SERVICE_FILE" "$SYSTEM_SERVICE_SAVE"
             elif [ "$save_option" = "user" ]; then
-                copy "$SERVICE_FILE" "$USER_SERVICE_SAVE"
+                cp "$SERVICE_FILE" "$USER_SERVICE_SAVE"
             else
                 print_error "Choose a correct answer" 2
                 continue
