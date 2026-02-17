@@ -7,7 +7,7 @@ IPTABLES_FILES_DIR="$BASE_DIR/iptables_files/"
 SYS_FILE="$IPTABLES_FILES_DIR/sys_firewall_rules.sh"
 SERVICE_FILE="$SERVICE_FILES_DIR/iptables-rules.service"
 IPTABLES_SCRIPT="$BASE_DIR/iptables-utils.sh"
-SERVICE_SCRIPT="$BASE_DIR/service_utils.sh"
+SERVICE_SCRIPT="$BASE_DIR/service-utils.sh"
 
 ##User Save Directories
 USER_SERVICE_SAVE="~/.config/systemd/user/"
@@ -161,23 +161,6 @@ print_services_menu()
     [7] → Enable Service
     [8] → Disable Service
     [9] → File Preview
-    [0] → Exit
-    ═══════════════════════════════════════
-MENU
-    echo -e "${NC}"
-}
-
-print_service_personalization()
-{
-    echo -e "${FG_GREEN}"
-    cat << 'MENU'
-    ═══════════════════════════════════════
-    [1] → Configure [Unit]
-    [2] → Configure [Service]
-    [3] → Configure [Install]
-    ---------------------------------------
-    [4] → File Preview
-    [5] → Save File
     [0] → Exit
     ═══════════════════════════════════════
 MENU
