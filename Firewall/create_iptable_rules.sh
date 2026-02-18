@@ -1,10 +1,10 @@
 #!/bin/bash
 
-#====== VARIABLES ======
+#====== SHELL VARIABLES ======
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 option=-1
 tables=(filter)
-root_user=
+root_user=0
 
 #====== SOURCE FILES ======
 source "$BASE_DIR/utils.sh"
@@ -121,6 +121,9 @@ services_menu()
 
     option=-1
 }
+
+#Checks if the user who exeuted the script has root privilegies
+check_root_privilegies
 
 #Check if exists iptables file, if exists clean it, if not create it
 reset_sys_file

@@ -195,10 +195,10 @@ print_error()
 }
 
 #====== USER & PERMISSIONS ======
-set_root_user()
+check_root_privilegies()
 {
     if [ "${EUID:-$(id -u)}" -eq 0 ]; then
-        
+      root_user=1
     fi
 }
 
