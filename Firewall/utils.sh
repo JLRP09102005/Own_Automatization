@@ -194,6 +194,14 @@ print_error()
     sleep "$wait_time"
 }
 
+#====== USER & PERMISSIONS ======
+set_root_user()
+{
+    if [ "${EUID:-$(id -u)}" -eq 0 ]; then
+        
+    fi
+}
+
 #====== FILE FUNCTIONS ======
 reset_sys_file()
 {
