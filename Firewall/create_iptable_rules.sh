@@ -7,7 +7,8 @@ tables=(filter)
 root_user=0
 
 #====== SOURCE FILES ======
-source "$BASE_DIR/utils.sh"
+source "$BASE_DIR/file-utils.sh"
+source "$UTILS_SCRIPT"
 source "$IPTABLES_SCRIPT"
 source "$SERVICE_SCRIPT"
 
