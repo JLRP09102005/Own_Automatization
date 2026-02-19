@@ -15,8 +15,10 @@ SERVICE_SCRIPT="$BASE_DIR/service-utils.sh"
 USER_SERVICE_SAVE="~/.config/systemd/user/"
 ##System Save Directories
 SYSTEM_SERVICE_SAVE="/etc/systemd/user/"
+##Common Save Directories
+DATA_SAVE="$HOME/.local/share/iptables-creator/config.txt"
 
-#====== FILE FUNCTIONS ======
+#====== FILE CLEANING ======
 reset_sys_file()
 {
     if [ -e "$SYS_FILE" ]; then
@@ -33,5 +35,24 @@ reset_service_file()
         truncate -s "$SERVICE_FILE"
     else
         mkdir -p "$SERVICE_FILES_DIR" && touch "$SERVICE_FILE"
+    fi
+}
+
+#====== FILE READING ======
+read_file_coincidencies()
+{
+    local file="$1" prefix="$2" sufix="$3"
+
+    [[ ! -e "$file" ]] && {
+        print_error "File $file to read from not found" 2 >&2
+        return 1
+    }
+
+    if [[ -z "$sufix" ]]; then
+        grep "${prefix}.*" "$file"
+    elif [[ -z "$prefix" ]]; then
+        grep ".*${sufix}" "$file"
+    else
+        grep "${prefix}.*${sufix}" "$file"
     fi
 }

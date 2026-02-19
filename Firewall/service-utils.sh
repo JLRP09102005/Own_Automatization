@@ -303,3 +303,15 @@ configure_install_wizzard()
 {
 
 }
+
+#====== SERVICE STATE ======
+start_iptables_service()
+{
+    local service_name
+
+    if [ "$root_user" -ne 0 ]; then
+        service_name=
+    else
+
+    fi
+}
