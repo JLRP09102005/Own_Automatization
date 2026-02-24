@@ -100,7 +100,7 @@ rules_menu()
 services_menu()
 {
     while [ "$option" -ne 0 ]; do
-        clear
+
         print_services_menu
 
         read -r -p "Select Option: " option
@@ -117,6 +117,10 @@ services_menu()
             create_default_service
         elif [ "$option" -eq 3 ]; then
             create_service_wizzard
+        elif [ "$option" -eq 4 ]; then
+            echo "option 4"
+        elif [ "$option" -eq 5 ]; then
+            start_iptables_service
         fi
     done
 

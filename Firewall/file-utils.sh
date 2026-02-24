@@ -16,7 +16,7 @@ USER_SERVICE_SAVE="~/.config/systemd/user/"
 ##System Save Directories
 SYSTEM_SERVICE_SAVE="/etc/systemd/user/"
 ##Common Save Directories
-DATA_SAVE="$HOME/.local/share/iptables-creator/config.txt"
+CONFIG_SAVE="$HOME/.local/share/iptables-creator/config.txt"
 
 #====== FILE CLEANING ======
 reset_sys_file()
@@ -41,18 +41,32 @@ reset_service_file()
 #====== FILE READING ======
 read_file_coincidencies()
 {
-    local file="$1" prefix="$2" sufix="$3"
+    local file="$1" prefix="$2" sufix="$3" grep_result multiple_coincidences=$4 line="line number"
 
     [[ ! -e "$file" ]] && {
+        print_info "check if file exists" 5
         print_error "File $file to read from not found" 2 >&2
         return 1
     }
 
     if [[ -z "$sufix" ]]; then
-        grep "${prefix}.*" "$file"
+        grep_result="$(grep -q "${prefix}.*" "$file")"
     elif [[ -z "$prefix" ]]; then
-        grep ".*${sufix}" "$file"
+        grep_result="$(grep -q ".*${sufix}" "$file")"
     else
-        grep "${prefix}.*${sufix}" "$file"
+        grep_result="$(grep -q "${prefix}.*${sufix}" "$file")"
+    fi
+
+    if [[ "$multiple_coincidences" -ne 0 && "$(echo "$grep_result" | wc -l)" -gt 1 ]]; then
+        print_warning "You have more than 1 coincidence, please select 1 of them by writing the line number" 1 
+        
+        while ! check_only_numbers "$line"; do
+            printf "$grep_result" >&2
+            read -r -p "Line Selection: " line
+        done
+
+        grep_result="$(echo "$grep_result" | sed "${line}p")"
+    else
+        printf "$grep_result"
     fi
 }

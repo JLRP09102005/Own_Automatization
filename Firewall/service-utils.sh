@@ -296,12 +296,12 @@ configure_unit_wizzard()
 
 configure_service_wizzard()
 {
-
+    echo "configure wizzard"
 }
 
 configure_install_wizzard()
 {
-
+    echo "configure wizzard"
 }
 
 #====== SERVICE STATE ======
@@ -310,8 +310,10 @@ start_iptables_service()
     local service_name
 
     if [ "$root_user" -ne 0 ]; then
-        service_name=
+        service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)"
+        print_info "$service_name" 5
     else
-
+        service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)"
+        print_info "$service_name" 5
     fi
 }
