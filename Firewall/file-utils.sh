@@ -44,29 +44,43 @@ read_file_coincidencies()
     local file="$1" prefix="$2" sufix="$3" grep_result multiple_coincidences=$4 line="line number"
 
     [[ ! -e "$file" ]] && {
-        print_info "check if file exists" 5
         print_error "File $file to read from not found" 2 >&2
         return 1
     }
 
     if [[ -z "$sufix" ]]; then
-        grep_result="$(grep -q "${prefix}.*" "$file")"
+        grep_result="$(grep "${prefix}.*" "$file")"
     elif [[ -z "$prefix" ]]; then
-        grep_result="$(grep -q ".*${sufix}" "$file")"
+        grep_result="$(grep ".*${sufix}" "$file")"
     else
-        grep_result="$(grep -q "${prefix}.*${sufix}" "$file")"
+        grep_result="$(grep "${prefix}.*${sufix}" "$file")"
     fi
 
     if [[ "$multiple_coincidences" -ne 0 && "$(echo "$grep_result" | wc -l)" -gt 1 ]]; then
         print_warning "You have more than 1 coincidence, please select 1 of them by writing the line number" 1 
+
+        local coincidences_number
+        coincidences_number="$(echo "$grep_result" | wc -l)"
         
-        while ! check_only_numbers "$line"; do
-            printf "$grep_result" >&2
+        while ! check_only_numbers "$line" || [ "$line" -gt "$coincidences_number" ] ; do
+            printf "%s\n" "$grep_result" >&2
             read -r -p "Line Selection: " line
         done
 
-        grep_result="$(echo "$grep_result" | sed "${line}p")"
+        grep_result="$(echo "$grep_result" | sed -n "${line}p")"
+    fi
+
+    printf "%s" "$grep_result"
+}
+
+#====== FILE PRINT ======
+print_file()
+{
+    local file_path="$1"
+
+    if [ ! -f "$file_path" ]; then
+        print_error "This file doesn't exists, imposible to print" 4
     else
-        printf "$grep_result"
+        printf "%s\n" "$(cat "$file_path")"
     fi
 }

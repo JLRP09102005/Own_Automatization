@@ -1,1 +1,16 @@
-[Unit] [Install] [Service]
+[Unit] [Install] [Service][Unit]
+Description=Service for iptables rules
+After=network-online.target NetworkManager-wait-online-initrd.service NetworkManager.service
+Wants=network-online.target
+Before=graphical.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/iptables-rules.sh
+TimeoutStartSec=120
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

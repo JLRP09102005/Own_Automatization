@@ -187,3 +187,10 @@ check_root_privilegies()
       root_user=1
     fi
 }
+
+#====== INPUTS ======
+enter_to_continue()
+{
+    print_info "PRESS ENTER TO CONTINUE THE SOFTWARE EXECUTION" 0
+    read -r 
+}
