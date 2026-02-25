@@ -1,2 +1,2 @@
 # Own_Automatization
- Scripts that i mide for my device
+ Scripts that i made for my device
