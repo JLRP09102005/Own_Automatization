@@ -360,12 +360,11 @@ disable_iptables_service()
 print_iptables_service_file()
 {
     local filename
-
     read -r -p "Service Filename: " filename
 
     if [ "$root_user" -ne 0 ]; then
-        print_file "${SYSTEM_SERVICE_SAVE}/${filename}"
+        print_file "${SYSTEM_SERVICE_SAVE}${filename}"
     else
-        print_file "${USER_SERVICE_SAVE}/${filename}"
+        print_file "${USER_SERVICE_SAVE}${filename}"
     fi
 }

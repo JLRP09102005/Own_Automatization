@@ -12,9 +12,9 @@ IPTABLES_SCRIPT="$BASE_DIR/iptables-utils.sh"
 SERVICE_SCRIPT="$BASE_DIR/service-utils.sh"
 
 ##User Save Directories
-USER_SERVICE_SAVE="~/.config/systemd/user/"
+USER_SERVICE_SAVE="${HOME}/.config/systemd/user/"
 ##System Save Directories
-SYSTEM_SERVICE_SAVE="/etc/systemd/user/"
+SYSTEM_SERVICE_SAVE="/etc/systemd/system/"
 ##Common Save Directories
 CONFIG_SAVE="$HOME/.local/share/iptables-creator/config.txt"
 
@@ -76,11 +76,12 @@ read_file_coincidencies()
 #====== FILE PRINT ======
 print_file()
 {
-    local file_path="$1"
+    local file="$1"
 
-    if [ ! -f "$file_path" ]; then
+    if [ ! -f "$file" ]; then
         print_error "This file doesn't exists, imposible to print" 4
     else
-        printf "%s\n" "$(cat "$file_path")"
+        printf "%s\n" "$(cat "$file")"
+        enter_to_continue
     fi
 }
