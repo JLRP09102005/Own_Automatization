@@ -81,7 +81,6 @@ print_main_menu()
     [3] → Create Service
     [4] → Show Service Status
     [5] → Save Config
-    [6] → Restore Config
     [0] → Exit
     ═══════════════════════════════════════
 MENU

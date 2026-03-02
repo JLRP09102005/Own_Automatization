@@ -29,14 +29,14 @@ reset_sys_file()
     printf "#!/bin/bash\n" > "$SYS_FILE"
 }
 
-reset_service_file()
-{
-    if [ -e "$SERVICE_FILE" ]; then
-        truncate -s "$SERVICE_FILE"
-    else
-        mkdir -p "$SERVICE_FILES_DIR" && touch "$SERVICE_FILE"
-    fi
-}
+# reset_service_file()
+# {
+#     if [ -e "$SERVICE_FILE" ]; then
+#         truncate -s "$SERVICE_FILE"
+#     else
+#         mkdir -p "$SERVICE_FILES_DIR" && touch "$SERVICE_FILE"
+#     fi
+# }
 
 #====== FILE READING ======
 read_file_coincidencies()
@@ -84,4 +84,12 @@ print_file()
         printf "%s\n" "$(cat "$file")"
         enter_to_continue
     fi
+}
+
+#====== FILE MODIFICATION ======
+move_file()
+{
+    local origin_file="$1" dest_file="$2"
+
+    [[ -f "$origin_file" ]] && mv "$origin_file" "$dest_file"
 }

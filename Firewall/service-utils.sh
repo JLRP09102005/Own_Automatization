@@ -368,3 +368,32 @@ print_iptables_service_file()
         print_file "${USER_SERVICE_SAVE}${filename}"
     fi
 }
+
+show_iptables_service_state()
+{
+    local file file_absolute_path
+
+    read -r -p "Enter the service name without extension: " file
+
+    if [ "$root_user" -ne 0 ]; then
+        file_absolute_path="${USER_SERVICE_SAVE}${file}.service"
+        [[ -f "$file_absolute_path" ]] && systemctl --user status "$file_absolute_path"
+    else
+        file_absolute_path="${SYSTEM_SERVICE_SAVE}${file}.service"
+        [[ -f "$file_absolute_path" ]] && sudo systemctl status "$file_absolute_path"
+    fi
+}
+
+#====== SERVICE SAVE ======
+save_service_file()
+{
+    local service_file 
+
+    read -r -p "Enter the service name to save without extension: " service_file
+
+    if [ "$root_user" -ne 0 ]; then
+        move_file "${SERVICE_FILES_DIR}${service_file}.service" "${USER_SERVICE_SAVE}${service_file}.service"
+    else
+        move_file "${SERVICE_FILES_DIR}${service_file}.service" "${SYSTEM_SERVICE_SAVE}${service_file}.service"
+    fi
+}

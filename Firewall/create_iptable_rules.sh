@@ -33,6 +33,10 @@ main_menu()
             rules_menu
         elif [ "$option" -eq 3 ]; then
             services_menu
+        elif [ "$option" -eq 4 ]; then
+            show_iptables_service_state
+        elif [ "$option" -eq 5 ]; then
+            save_service_file
         fi
 
     done
@@ -142,7 +146,7 @@ check_root_privilegies
 reset_sys_file
 
 #Check if exists service file, if exists clean it, if not create it
-reset_service_file
+# reset_service_file
 
 #Starts the program
 main_menu
