@@ -389,7 +389,12 @@ save_service_file()
 {
     local service_file 
 
-    read -r -p "Enter the service name to save without extension: " service_file
+    read -r -p "Enter the service file name to save without extension: " service_file
+
+    if [[ ! -f "${SERVICE_FILES_DIR}${service_file}.service" ]]; then
+        print_error "The entered service file doesn't exists" 2
+        return 1
+    fi
 
     if [ "$root_user" -ne 0 ]; then
         move_file "${SERVICE_FILES_DIR}${service_file}.service" "${USER_SERVICE_SAVE}${service_file}.service"

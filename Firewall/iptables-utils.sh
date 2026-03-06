@@ -220,3 +220,22 @@ iptables_rule_wizzard()
         printf_warning "Deleting Rule..." 2
     fi
 }
+
+#====== IPTABLES SAVE ======
+save_iptables_file()
+{
+    local iptables_file
+
+    read -r -p "Enter the iptables file name to save without extension: " iptables_file
+
+    if [[ ! -f "${IPTABLES_FILES_DIR}${iptables_file}.sh" ]]; then
+        print_error "The entered iptables file doesn't exists" 2
+        return 1
+    fi
+
+    if [ "$root_user" -ne 0 ]; then
+        move_file "${IPTABLES_FILES_DIR}${iptables_file}.sh" ""
+    else
+
+    fi
+}
