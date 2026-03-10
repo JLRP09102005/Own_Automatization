@@ -13,9 +13,10 @@ SERVICE_SCRIPT="$BASE_DIR/service-utils.sh"
 
 ##User Save Directories
 USER_SERVICE_SAVE="${HOME}/.config/systemd/user/"
-USER_SCRIPTS_SAVE="${HOME}/bin"
+USER_SCRIPTS_SAVE="${HOME}/.local/bin"
 ##System Save Directories
 SYSTEM_SERVICE_SAVE="/etc/systemd/system/"
+SYSTEM_SCRIPT_SAVE="/usr/local/bin"
 ##Common Save Directories
 CONFIG_SAVE="$HOME/.local/share/iptables-creator/config.txt"
 
@@ -83,6 +84,18 @@ print_file()
         print_error "This file doesn't exists, imposible to print" 4
     else
         printf "%s\n" "$(cat "$file")"
+        enter_to_continue
+    fi
+}
+
+print_directory()
+{
+    local path="$1"
+
+    if [[ ! -d "$path" ]]; then
+        print_error "This directory doesn't exists, imposible to list content"
+    else
+        ls -la
         enter_to_continue
     fi
 }

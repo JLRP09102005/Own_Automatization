@@ -234,8 +234,8 @@ save_iptables_file()
     fi
 
     if [ "$root_user" -ne 0 ]; then
-        move_file "${IPTABLES_FILES_DIR}${iptables_file}.sh" ""
+        move_file "${IPTABLES_FILES_DIR}${iptables_file}.sh" "$USER_SCRIPT_SAVE"
     else
-
+        move_file "${IPTABLES_FILES_DIR}${iptables_file}.sh" "$SYSTEM_SCRIPT_SAVE"
     fi
 }

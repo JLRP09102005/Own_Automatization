@@ -398,7 +398,9 @@ save_service_file()
 
     if [ "$root_user" -ne 0 ]; then
         move_file "${SERVICE_FILES_DIR}${service_file}.service" "${USER_SERVICE_SAVE}${service_file}.service"
+        print_direcoty "${USER_SERVICE_SAVE}"
     else
         move_file "${SERVICE_FILES_DIR}${service_file}.service" "${SYSTEM_SERVICE_SAVE}${service_file}.service"
+        print_direcoty "${SYSTEM_SERVICE_SAVE}"
     fi
 }

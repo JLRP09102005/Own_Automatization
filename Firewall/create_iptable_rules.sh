@@ -37,6 +37,7 @@ main_menu()
             show_iptables_service_state
         elif [ "$option" -eq 5 ]; then
             save_service_file
+            save_iptables_file
         fi
 
     done
