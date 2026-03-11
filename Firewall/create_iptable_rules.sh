@@ -95,6 +95,8 @@ rules_menu()
             print_info "2" 2
         elif [ "$option" -eq 3 ]; then
             iptables_rule_wizzard
+        elif [ "$option" -eq 4 ]; then
+            print_iptables_rules_file
         fi
 
     done

@@ -359,14 +359,9 @@ disable_iptables_service()
 
 print_iptables_service_file()
 {
-    local filename
-    read -r -p "Service Filename: " filename
+    local filename="sys_firewall_rules"
 
-    if [ "$root_user" -ne 0 ]; then
-        print_file "${SYSTEM_SERVICE_SAVE}${filename}"
-    else
-        print_file "${USER_SERVICE_SAVE}${filename}"
-    fi
+    print_file "${SERVICE_FILES_DIR}${filename}.sh"
 }
 
 show_iptables_service_state()
@@ -387,9 +382,7 @@ show_iptables_service_state()
 #====== SERVICE SAVE ======
 save_service_file()
 {
-    local service_file 
-
-    read -r -p "Enter the service file name to save without extension: " service_file
+    local service_file="iptables-rules"
 
     if [[ ! -f "${SERVICE_FILES_DIR}${service_file}.service" ]]; then
         print_error "The entered service file doesn't exists" 2

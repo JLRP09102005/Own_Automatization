@@ -120,6 +120,7 @@ print_rules_menu()
     [1] → Add Default Rules
     [2] → Add Quick Rule
     [3] → Add Specific Rule
+    [4] → File Preview
     [0] → Exit
     ═══════════════════════════════════════
 MENU

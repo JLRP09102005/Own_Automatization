@@ -16,7 +16,7 @@ iptables_clean_all_rules()
 {
     write_rule << 'CONTENT'
 #Clean All Firewall Rules
-tables=(filter nat mangle raw security)
+tables=(filter)
 #====== DEFAULT POLICY ======
 for table in "${tables[@]}"; do
 
@@ -224,9 +224,7 @@ iptables_rule_wizzard()
 #====== IPTABLES SAVE ======
 save_iptables_file()
 {
-    local iptables_file
-
-    read -r -p "Enter the iptables file name to save without extension: " iptables_file
+    local iptables_file="sys_firewall_rules"
 
     if [[ ! -f "${IPTABLES_FILES_DIR}${iptables_file}.sh" ]]; then
         print_error "The entered iptables file doesn't exists" 2
@@ -238,4 +236,12 @@ save_iptables_file()
     else
         move_file "${IPTABLES_FILES_DIR}${iptables_file}.sh" "$SYSTEM_SCRIPT_SAVE"
     fi
+}
+
+#====== IPTABLES PRINT ======
+print_iptables_rules_file()
+{
+    local filename="iptables-rules"
+
+    print_file "${IPTABLES_FILES_DIR}${filename}.sh"
 }
