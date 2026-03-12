@@ -77,9 +77,6 @@ configure_unit_wizzard()
     local -n _ref_unit="$1"
     local user_response
 
-    echo "DEBUG: arr referencia a -> $1"
-    echo "DEBUG: contenido actual -> " "${_ref_unit[@]}"
-
     print_info "To write more than 1 option: AddRequirement=req1,req2,req1" 1
     echo ""
 
