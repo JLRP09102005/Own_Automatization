@@ -74,7 +74,7 @@ create_service_wizzard()
 
 configure_unit_wizzard()
 {
-    local -n unit="$1"
+    local -n arr="$1"
 
     print_info "To write more than 1 option: AddRequirement=req1,req2,req1" 1
     echo ""
@@ -84,10 +84,10 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Description [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("Description=$user_response")
+        [[ -n "$user_response" ]] && arr+=("Description=$user_response")
 
         read -r -p "Add Documentation [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("Documentation=$user_response")
+        [[ -n "$user_response" ]] && arr+=("Documentation=$user_response")
 
     fi
 
@@ -96,34 +96,34 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Requirement [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("Requires=$user_response")
+        [[ -n "$user_response" ]] && arr+=("Requires=$user_response")
 
         read -r -p "Add Overridable Requirement [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("RequiresOverridable=$user_response")
+        [[ -n "$user_response" ]] && arr+=("RequiresOverridable=$user_response")
 
         read -r -p "Add Requisite [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("Requisite=$user_response")
+        [[ -n "$user_response" ]] && arr+=("Requisite=$user_response")
 
         read -r -p "Add Requisite Overridable [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("RequisiteOverridable=$user_response")
+        [[ -n "$user_response" ]] && arr+=("RequisiteOverridable=$user_response")
 
         read -r -p "Add Wants [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("Wants=$user_response")
+        [[ -n "$user_response" ]] && arr+=("Wants=$user_response")
 
         read -r -p "Add Binds To [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("BindsTo=$user_response")
+        [[ -n "$user_response" ]] && arr+=("BindsTo=$user_response")
 
         read -r -p "Add Part Of [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("PartOf=$user_response")
+        [[ -n "$user_response" ]] && arr+=("PartOf=$user_response")
 
         read -r -p "Add Requires Mounts For [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("RequiresMountsFor=$user_response")
+        [[ -n "$user_response" ]] && arr+=("RequiresMountsFor=$user_response")
 
         read -r -p "Add Joins Namespace Of [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("JoinsNamespaceOf=$user_response")
+        [[ -n "$user_response" ]] && arr+=("JoinsNamespaceOf=$user_response")
 
         read -r -p "Add Conflicts [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("Conflicts=$user_response")
+        [[ -n "$user_response" ]] && arr+=("Conflicts=$user_response")
 
     fi
 
@@ -131,16 +131,16 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Before [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("Before=$user_response")
+        [[ -n "$user_response" ]] && arr+=("Before=$user_response")
 
         read -r -p "Add After [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("After=$user_response")
+        [[ -n "$user_response" ]] && arr+=("After=$user_response")
 
         read -r -p "Add On Failure [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("OnFailure=$user_response")
+        [[ -n "$user_response" ]] && arr+=("OnFailure=$user_response")
 
         read -r -p "Add On Failure Job Mode [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("OnFailureJobMode=$user_response")
+        [[ -n "$user_response" ]] && arr+=("OnFailureJobMode=$user_response")
 
     fi
 
@@ -148,10 +148,10 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Propagates Reload To [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("PropagatesReloadTo=$user_response")
+        [[ -n "$user_response" ]] && arr+=("PropagatesReloadTo=$user_response")
 
         read -r -p "Add Reload Propagated From [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ReloadPropagatedFrom=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ReloadPropagatedFrom=$user_response")
 
     fi
 
@@ -159,28 +159,28 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Condition Path Exists [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionPathExists=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionPathExists=$user_response")
 
         read -r -p "Add Condition Path Exists Glob [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionPathExistsGlob=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionPathExistsGlob=$user_response")
 
         read -r -p "Add Condition Path Is Directory [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionPathIsDirectory=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionPathIsDirectory=$user_response")
 
         read -r -p "Add Condition Path Is Symbolic Link [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionPathIsSymbolicLink=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionPathIsSymbolicLink=$user_response")
 
         read -r -p "Add Condition Path Is Mount Point [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionPathIsMountPoint=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionPathIsMountPoint=$user_response")
 
         read -r -p "Add Condition Directory Not Empty [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionDirectoryNotEmpty=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionDirectoryNotEmpty=$user_response")
 
         read -r -p "Add Condition File Not Empty [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionFileNotEmpty=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionFileNotEmpty=$user_response")
 
         read -r -p "Add Condition File Is Executable [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionFileIsExecutable=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionFileIsExecutable=$user_response")
 
     fi
 
@@ -188,28 +188,28 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Condition Architecture [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionArchitecture=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionArchitecture=$user_response")
 
         read -r -p "Add Condition Virtualization [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionVirtualization=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionVirtualization=$user_response")
 
         read -r -p "Add Condition Security [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionSecurity=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionSecurity=$user_response")
 
         read -r -p "Add Condition Capability [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionCapability=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionCapability=$user_response")
 
         read -r -p "Add Condition Kernel Command Line [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionKernelCommandLine=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionKernelCommandLine=$user_response")
 
         read -r -p "Add Condition AC Power [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionACPower=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionACPower=$user_response")
 
         read -r -p "Add Condition Needs Update [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionNeedsUpdate=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionNeedsUpdate=$user_response")
 
         read -r -p "Add Condition Null [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionNull=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionNull=$user_response")
 
     fi
 
@@ -217,19 +217,19 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Condition User [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionUser=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionUser=$user_response")
 
         read -r -p "Add Condition Group [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionGroup=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionGroup=$user_response")
 
         read -r -p "Add Condition Environment [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionEnvironment=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionEnvironment=$user_response")
 
         read -r -p "Add Condition Form Field [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionFormField=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionFormField=$user_response")
 
         read -r -p "Add Condition Extension [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("ConditionExtension=$user_response")
+        [[ -n "$user_response" ]] && arr+=("ConditionExtension=$user_response")
 
     fi
 
@@ -237,16 +237,16 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Refuse Manual Start [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("RefuseManualStart=$user_response")
+        [[ -n "$user_response" ]] && arr+=("RefuseManualStart=$user_response")
 
         read -r -p "Add Refuse Manual Stop [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("RefuseManualStop=$user_response")
+        [[ -n "$user_response" ]] && arr+=("RefuseManualStop=$user_response")
 
         read -r -p "Add Refuse Manual Reload [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("RefuseManualReload=$user_response")
+        [[ -n "$user_response" ]] && arr+=("RefuseManualReload=$user_response")
 
         read -r -p "Allow Isolate [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("AllowIsolate=$user_response")
+        [[ -n "$user_response" ]] && arr+=("AllowIsolate=$user_response")
 
     fi
 
@@ -254,19 +254,19 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Default Dependencies [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("DefaultDependencies=$user_response")
+        [[ -n "$user_response" ]] && arr+=("DefaultDependencies=$user_response")
 
         read -r -p "Add Stop When Unneeded [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("StopWhenUnneeded=$user_response")
+        [[ -n "$user_response" ]] && arr+=("StopWhenUnneeded=$user_response")
 
         read -r -p "Add Ignore On Isolate [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("IgnoreOnIsolate=$user_response")
+        [[ -n "$user_response" ]] && arr+=("IgnoreOnIsolate=$user_response")
 
         read -r -p "Add Ignore On Snapshot [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("IgnoreOnSnapshot=$user_response")
+        [[ -n "$user_response" ]] && arr+=("IgnoreOnSnapshot=$user_response")
 
         read -r -p "Add CollectMode [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("CollectMode=$user_response")
+        [[ -n "$user_response" ]] && arr+=("CollectMode=$user_response")
 
     fi
 
@@ -274,13 +274,13 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Job Timeout Sec [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("JobTimeoutSec=$user_response")
+        [[ -n "$user_response" ]] && arr+=("JobTimeoutSec=$user_response")
 
         read -r -p "Add Job Timeout Action [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("JobTimeoutAction=$user_response")
+        [[ -n "$user_response" ]] && arr+=("JobTimeoutAction=$user_response")
 
         read -r -p "Add Job Timeout Reboot Arg [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("JobTimeoutRebootArg=$user_response")
+        [[ -n "$user_response" ]] && arr+=("JobTimeoutRebootArg=$user_response")
 
     fi
 
@@ -288,7 +288,7 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Source Path [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit+=("SourcePath=$user_response")
+        [[ -n "$user_response" ]] && arr+=("SourcePath=$user_response")
 
     fi
 }
