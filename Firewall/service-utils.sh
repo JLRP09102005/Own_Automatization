@@ -45,7 +45,8 @@ CONTENT
 
 create_service_wizzard()
 {
-    local user_response service_file unit service install
+    local user_response service_file 
+    local -a unit service install
 
     unit=("[Unit]")
     service=("[Service]")
@@ -54,17 +55,17 @@ create_service_wizzard()
     read -r -p "¿Configure [Unit]? (y/n) [n]: " user_response
     user_response="${user_response:-n}"
     if check_yes_no_response "$user_response"; then
-        configure_unit_wizzard
+        configure_unit_wizzard unit
     fi
 
     read -r -p "¿Configure [Service]? (y/n) [n]: " user_response
     if check_yes_no_response "$user_response"; then
-        configure_service_wizzard
+        configure_service_wizzard service
     fi
 
     read -r -p "¿Configure [Install]? (y/n) [n]: " user_response
     if check_yes_no_response "$user_response"; then
-        configure_install_wizzard
+        configure_install_wizzard install
     fi
 
     service_file=("${unit[@]}" "${install[@]}" "${service[@]}")
@@ -73,6 +74,8 @@ create_service_wizzard()
 
 configure_unit_wizzard()
 {
+    local -n unit="$1"
+
     print_info "To write more than 1 option: AddRequirement=req1,req2,req1" 1
     echo ""
 
