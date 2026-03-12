@@ -75,6 +75,7 @@ create_service_wizzard()
 configure_unit_wizzard()
 {
     local -n arr="$1"
+    local user_response
 
     print_info "To write more than 1 option: AddRequirement=req1,req2,req1" 1
     echo ""
