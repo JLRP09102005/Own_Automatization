@@ -14,9 +14,9 @@ print_service_file()
 write_service()
 {
     if [ "$#" -gt 0 ]; then
-        printf "$@" >> "$SERVICE_FILE"
+        printf "$@" > "$SERVICE_FILE"
     else
-        cat >> "$SERVICE_FILE"
+        cat > "$SERVICE_FILE"
     fi
 }
 
@@ -67,7 +67,8 @@ create_service_wizzard()
         configure_install_wizzard
     fi
 
-    service_file="$unit $install $service"
+    service_file="$unit $install $service" && 
+    echo "$service_file" | tr ' ' '\n'
     write_service "$service_file"
 }
 
@@ -359,9 +360,9 @@ disable_iptables_service()
 
 print_iptables_service_file()
 {
-    local filename="sys_firewall_rules"
+    local filename="iptables-rules"
 
-    print_file "${SERVICE_FILES_DIR}${filename}.sh"
+    print_file "${SERVICE_FILES_DIR}${filename}.service"
 }
 
 show_iptables_service_state()

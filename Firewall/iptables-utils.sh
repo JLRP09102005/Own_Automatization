@@ -241,7 +241,7 @@ save_iptables_file()
 #====== IPTABLES PRINT ======
 print_iptables_rules_file()
 {
-    local filename="iptables-rules"
+    local filename="sys_firewall_rules"
 
     print_file "${IPTABLES_FILES_DIR}${filename}.sh"
 }

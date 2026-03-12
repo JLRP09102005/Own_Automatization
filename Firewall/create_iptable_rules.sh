@@ -147,6 +147,7 @@ check_root_privilegies
 
 #Check if exists iptables file, if exists clean it, if not create it
 reset_sys_file
+reset_service_file
 
 #Check if exists service file, if exists clean it, if not create it
 # reset_service_file
