@@ -14,7 +14,7 @@ print_service_file()
 write_service()
 {
     if [ "$#" -gt 0 ]; then
-        printf "$@" > "$SERVICE_FILE"
+        printf "%s\n" "$@" > "$SERVICE_FILE"
     else
         cat > "$SERVICE_FILE"
     fi
