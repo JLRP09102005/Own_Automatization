@@ -18,8 +18,6 @@ write_service()
     else
         cat > "$SERVICE_FILE"
     fi
-
-    sed 's| |\n|g' "$SERVICE_FILE"
 }
 
 ##Default Rule Creator
@@ -69,8 +67,7 @@ create_service_wizzard()
         configure_install_wizzard
     fi
 
-    service_file="$unit $install $service" && 
-    echo "$service_file" | tr ' ' '\n'
+    service_file="$unit\n$install\n$service"
     write_service "$service_file"
 }
 
@@ -84,10 +81,10 @@ configure_unit_wizzard()
     if check_yes_no_response "$user_response"; then
 
         read -r -p "Add Description [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit="$unit Description=$user_response"
+        [[ -n "$user_response" ]] && unit="$unit\nDescription=$user_response"
 
         read -r -p "Add Documentation [ENTER to skip]: " user_response
-        [[ -n "$user_response" ]] && unit="$unit Decoumentation=$user_response"
+        [[ -n "$user_response" ]] && unit="$unit\nDecoumentation=$user_response"
 
     fi
 
