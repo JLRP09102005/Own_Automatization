@@ -18,6 +18,8 @@ write_service()
     else
         cat > "$SERVICE_FILE"
     fi
+
+    sed 's| |\n|g' "$SERVICE_FILE"
 }
 
 ##Default Rule Creator
