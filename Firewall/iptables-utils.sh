@@ -224,24 +224,24 @@ iptables_rule_wizzard()
 #====== IPTABLES SAVE ======
 save_iptables_file()
 {
-    local iptables_file="sys_firewall_rules"
+    local iptables_file="$SYS_FILE"
 
-    if [[ ! -f "${IPTABLES_FILES_DIR}${iptables_file}.sh" ]]; then
+    if [[ ! -f "${IPTABLES_FILES_DIR}${iptables_file}" ]]; then
         print_error "The entered iptables file doesn't exists" 2
         return 1
     fi
 
     if [ "$root_user" -ne 0 ]; then
-        move_file "${IPTABLES_FILES_DIR}${iptables_file}.sh" "$USER_SCRIPT_SAVE"
+        move_file "${IPTABLES_FILES_DIR}${iptables_file}" "$USER_SCRIPT_SAVE"
     else
-        move_file "${IPTABLES_FILES_DIR}${iptables_file}.sh" "$SYSTEM_SCRIPT_SAVE"
+        move_file "${IPTABLES_FILES_DIR}${iptables_file}" "$SYSTEM_SCRIPT_SAVE"
     fi
 }
 
 #====== IPTABLES PRINT ======
 print_iptables_rules_file()
 {
-    local filename="sys_firewall_rules"
+    local filename="$SYS_FILE"
 
-    print_file "${IPTABLES_FILES_DIR}${filename}.sh"
+    print_file "${IPTABLES_FILES_DIR}${filename}"
 }
