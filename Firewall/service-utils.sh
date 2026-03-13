@@ -394,10 +394,10 @@ save_service_file()
     local service_file
     service_file="$(basename "$SERVICE_FILE")"
 
-    if [[ ! -f "${service_file}" ]]; then
-        print_error "The entered service file doesn't exists" 2
-        return 1
-    fi
+    # if [[ ! -f "${SERVICE_FILES_DIR}${service_file}" ]]; then
+    #     print_error "The entered service file doesn't exists" 2
+    #     return 1
+    # fi
 
     if [ "$root_user" -ne 0 ]; then
         move_file "${service_file}" "${USER_SERVICE_SAVE}${service_file}"
