@@ -310,10 +310,12 @@ start_iptables_service()
     local service_name
 
     if [ "$root_user" -ne 0 ]; then
-        service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)"
+        # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" #FUTURE IMPLEMENTATION
+        service_name="$(basename "$SERVICE_FILE")"
         systemctl --user start "$service_name"
     else
-        service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)"
+        # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
+        service_name="$(basename "$SERVICE_FILE")"
         sudo systemctl start "$service_name"
     fi
 }
@@ -323,10 +325,12 @@ stop_iptables_service()
     local service_name
 
     if [ "$root_user" -ne 0 ]; then
-        service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)"
+        # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
+        service_name="$(basename "$SERVICE_FILE")"
         systemctl --user stop "$service_name"
     else
-        service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)"
+        # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
+        service_name="$(basename "$SERVICE_FILE")"
         sudo systemctl stop "$service_name"
     fi
 }
@@ -336,10 +340,12 @@ enable_iptables_service()
     local service_name
     
     if [ "$root_user" -ne 0 ]; then
-        service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)"
+        # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
+        service_name="$(basename "$SERVICE_FILE")"
         systemctl --user enable "$service_name"
     else
-        service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)"
+        # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
+        service_name="$(basename "$SERVICE_FILE")"
         systemctl --user enable "$service_name"
     fi
 }
