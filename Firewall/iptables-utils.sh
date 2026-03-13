@@ -232,9 +232,9 @@ save_iptables_file()
     fi
 
     if [ "$root_user" -ne 0 ]; then
-        move_file "${IPTABLES_FILES_DIR}${iptables_file}" "$USER_SCRIPT_SAVE"
+        move_file "${iptables_file}" "$USER_SCRIPT_SAVE"
     else
-        move_file "${IPTABLES_FILES_DIR}${iptables_file}" "$SYSTEM_SCRIPT_SAVE"
+        move_file "${iptables_file}" "$SYSTEM_SCRIPT_SAVE"
     fi
 }
 
@@ -243,5 +243,5 @@ print_iptables_rules_file()
 {
     local filename="$SYS_FILE"
 
-    print_file "${IPTABLES_FILES_DIR}${filename}"
+    print_file "${filename}"
 }

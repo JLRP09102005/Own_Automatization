@@ -361,7 +361,7 @@ print_iptables_service_file()
 {
     local filename="$SERVICE_FILE"
 
-    print_file "${SERVICE_FILES_DIR}${filename}"
+    print_file "${filename}"
 }
 
 show_iptables_service_state()
@@ -384,16 +384,16 @@ save_service_file()
 {
     local service_file="$SERVICE_FILE"
 
-    if [[ ! -f "${SERVICE_FILES_DIR}${service_file}" ]]; then
+    if [[ ! -f "${service_file}" ]]; then
         print_error "The entered service file doesn't exists" 2
         return 1
     fi
 
     if [ "$root_user" -ne 0 ]; then
-        move_file "${SERVICE_FILES_DIR}${service_file}" "${USER_SERVICE_SAVE}${service_file}.service"
+        move_file "${service_file}" "${USER_SERVICE_SAVE}${service_file}"
         print_direcoty "${USER_SERVICE_SAVE}"
     else
-        move_file "${SERVICE_FILES_DIR}${service_file}" "${SYSTEM_SERVICE_SAVE}${service_file}.service"
+        move_file "${service_file}" "${SYSTEM_SERVICE_SAVE}${service_file}"
         print_direcoty "${SYSTEM_SERVICE_SAVE}"
     fi
 }
