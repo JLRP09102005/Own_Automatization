@@ -355,10 +355,12 @@ disable_iptables_service()
     local service_name
 
     if [ "$root_user" -ne 0 ]; then
-        service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)"
+        # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
+        service_name="$(basename "$SERVICE_FILE")"
         systemctl --user disable "$service_name"
     else
-        service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)"
+        # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
+        service_name="$(basename "$SERVICE_FILE")"
         sudo systemctl disable "$service_name"
     fi
 }
@@ -373,14 +375,15 @@ print_iptables_service_file()
 show_iptables_service_state()
 {
     local file file_absolute_path
+    file="$(basename "$SERVICE_FILE")"
 
     read -r -p "Enter the service name without extension: " file
 
     if [ "$root_user" -ne 0 ]; then
-        file_absolute_path="${USER_SERVICE_SAVE}${file}.service"
+        file_absolute_path="${USER_SERVICE_SAVE}${file}"
         [[ -f "$file_absolute_path" ]] && systemctl --user status "$file_absolute_path"
     else
-        file_absolute_path="${SYSTEM_SERVICE_SAVE}${file}.service"
+        file_absolute_path="${SYSTEM_SERVICE_SAVE}${file}"
         [[ -f "$file_absolute_path" ]] && sudo systemctl status "$file_absolute_path"
     fi
 }
@@ -388,7 +391,8 @@ show_iptables_service_state()
 #====== SERVICE SAVE ======
 save_service_file()
 {
-    local service_file="$SERVICE_FILE"
+    local service_file
+    service_file="$(basename "$SERVICE_FILE")"
 
     if [[ ! -f "${service_file}" ]]; then
         print_error "The entered service file doesn't exists" 2
