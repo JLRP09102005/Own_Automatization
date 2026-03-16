@@ -234,9 +234,13 @@ save_iptables_file()
     if [ "$root_user" -ne 0 ]; then
         check_directory "$USER_SCRIPT_SAVE" 1
         move_file "${iptables_file}" "$USER_SCRIPT_SAVE"
+        print_directory "$USER_SERVICE_SAVE"
+        enter_to_continue
     else
         check_directory "$SYSTEM_SCRIPT_SAVE" 1
         move_file "${iptables_file}" "$SYSTEM_SCRIPT_SAVE"
+        print_directory "$USER_SERVICE_SAVE"
+        enter_to_continue
     fi
 }
 
