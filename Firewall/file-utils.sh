@@ -21,6 +21,7 @@ SYSTEM_SCRIPT_SAVE="/usr/local/bin"
 CONFIG_SAVE="$HOME/.local/share/iptables-creator/config.txt"
 
 #====== FILE CLEANING ======
+## Clean the iptables file everytime is called
 reset_sys_file()
 {
     if [ -e "$SYS_FILE" ]; then
@@ -31,6 +32,7 @@ reset_sys_file()
     printf "#!/bin/bash\n" > "$SYS_FILE"
 }
 
+## Clean the service file everytime is called
 reset_service_file()
 {
     if [ -e "$SERVICE_FILE" ]; then
@@ -41,6 +43,8 @@ reset_service_file()
 }
 
 #====== FILE READING ======
+## read_file_coincidencies <file_path> [prefix_match] [sufix_match] [print_matches]
+## Search for line coincidences at the specified file and print it to the user to select wich one is correct if needed
 read_file_coincidencies()
 {
     local file="$1" prefix="$2" sufix="$3" grep_result multiple_coincidences=$4 line="line number"
@@ -76,6 +80,8 @@ read_file_coincidencies()
 }
 
 #====== FILE PRINT ======
+## print_file <file_path>
+## Displays the content from a file specified
 print_file()
 {
     local file="$1"
@@ -88,6 +94,8 @@ print_file()
     fi
 }
 
+## print_directory <directory_path>
+## Displays the content from a directory specified
 print_directory()
 {
     local path="$1"
@@ -101,9 +109,37 @@ print_directory()
 }
 
 #====== FILE MODIFICATION ======
+## move_file <origin_file> <destination_file>
+## Moves the files from the origin to the destination directory
 move_file()
 {
     local origin_file="$1" dest_file="$2"
 
     [[ -f "$origin_file" ]] && mv "$origin_file" "$dest_file"
+}
+
+#====== DIRECTORY CHECKING ======
+## check_directory <path> [create=0]
+## Returns 0 if exists, 1 if not (or fails to create).
+check_directory()
+{
+    local directory create_ifnot
+    directory="$1"
+    create_ifnot="${2:-0}"
+
+    [[ -z "$directory" ]] && { print_error "No directory specified" 2; return1 1; }
+
+    if [[ ! -d "$directory" ]]; then
+        if [[ "$create_ifnot" -eq 0 ]]; then
+            print_error "The entered directory doesn't exists" 2
+            return 1
+        else
+            mkdir -p "$directory"
+            print_warning "The entered directory doesn't exists, creating the directory..." 2
+            return 0
+        fi
+    else
+        print_info "The entered directory exists :)" 2
+        return 0
+    fi
 }
