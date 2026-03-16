@@ -226,10 +226,11 @@ save_iptables_file()
 {
     local iptables_file="$SYS_FILE"
 
-    # if [[ ! -f "${IPTABLES_FILES_DIR}${iptables_file}" ]]; then
-    #     print_error "The entered iptables file doesn't exists" 2
-    #     return 1
-    # fi
+    if [[ ! -f "${IPTABLES_FILES_DIR}${iptables_file}" ]]; then
+        print_error "The entered iptables file doesn't exists" 2
+        print_info "Creating the saving directory: $IPTABLES_FILES_DIR" 2
+        mkdir -p "$IPTABLES_FILES_DIR"
+    fi
 
     if [ "$root_user" -ne 0 ]; then
         move_file "${iptables_file}" "$USER_SCRIPT_SAVE"
