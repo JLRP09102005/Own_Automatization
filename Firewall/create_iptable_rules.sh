@@ -143,14 +143,13 @@ services_menu()
 }
 
 #Checks if the user who exeuted the script has root privilegies
-check_root_privilegies
+check_root_privileges
 
 #Check if exists iptables file, if exists clean it, if not create it
 reset_sys_file
-reset_service_file
 
 #Check if exists service file, if exists clean it, if not create it
-# reset_service_file
+reset_service_file
 
 #Starts the program
 main_menu

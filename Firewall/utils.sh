@@ -181,7 +181,7 @@ print_error()
 }
 
 #====== USER & PERMISSIONS ======
-check_root_privilegies()
+check_root_privileges()
 {
     if [ "${EUID:-$(id -u)}" -eq 0 ]; then
       root_user=1

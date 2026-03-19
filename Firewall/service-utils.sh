@@ -4,9 +4,9 @@
 ##Service File Printer
 print_service_file()
 {
-    echo "${FG_YELLOW}"
+    echo -e "${FG_YELLOW}"
     cat "$SERVICE_FILE"
-    echo "${NC}"
+    echo -e "${NC}"
 }
 
 ##Service Writer
@@ -68,7 +68,7 @@ create_service_wizzard()
         configure_install_wizzard install
     fi
 
-    service_file=("${unit[@]}" "${install[@]}" "${service[@]}")
+    service_file=("${unit[@]}" "${service[@]}" "${install[@]}")
     write_service "${service_file[@]}"
 }
 
@@ -310,13 +310,13 @@ start_iptables_service()
     local service_name
 
     if [ "$root_user" -ne 0 ]; then
-        # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" #FUTURE IMPLEMENTATION
-        service_name="$(basename "$SERVICE_FILE")"
-        systemctl --user start "$service_name"
-    else
         # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
         service_name="$(basename "$SERVICE_FILE")"
         sudo systemctl start "$service_name"
+    else
+        # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" #FUTURE IMPLEMENTATION
+        service_name="$(basename "$SERVICE_FILE")"
+        systemctl --user start "$service_name"
     fi
 }
 
@@ -327,11 +327,11 @@ stop_iptables_service()
     if [ "$root_user" -ne 0 ]; then
         # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
         service_name="$(basename "$SERVICE_FILE")"
-        systemctl --user stop "$service_name"
+        sudo systemctl stop "$service_name"
     else
         # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
         service_name="$(basename "$SERVICE_FILE")"
-        sudo systemctl stop "$service_name"
+        systemctl --user stop "$service_name"
     fi
 }
 
@@ -342,7 +342,7 @@ enable_iptables_service()
     if [ "$root_user" -ne 0 ]; then
         # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
         service_name="$(basename "$SERVICE_FILE")"
-        systemctl --user enable "$service_name"
+        sudo systemctl enable "$service_name"
     else
         # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
         service_name="$(basename "$SERVICE_FILE")"
@@ -357,11 +357,11 @@ disable_iptables_service()
     if [ "$root_user" -ne 0 ]; then
         # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
         service_name="$(basename "$SERVICE_FILE")"
-        systemctl --user disable "$service_name"
+        sudo systemctl disable "$service_name"
     else
         # service_name="$(read_file_coincidencies "$CONFIG_SAVE" "servicename" "" 1 | cut -d "=" -f2)" FUTURE IMPLEMENTATION
         service_name="$(basename "$SERVICE_FILE")"
-        sudo systemctl disable "$service_name"
+        systemctl --user disable "$service_name"
     fi
 }
 
@@ -377,14 +377,14 @@ show_iptables_service_state()
     local file file_absolute_path
     file="$(basename "$SERVICE_FILE")"
 
-    read -r -p "Enter the service name without extension: " file
+    # read -r -p "Enter the service name without extension: " file
 
     if [ "$root_user" -ne 0 ]; then
-        file_absolute_path="${USER_SERVICE_SAVE}${file}"
-        [[ -f "$file_absolute_path" ]] && systemctl --user status "$file_absolute_path"
-    else
         file_absolute_path="${SYSTEM_SERVICE_SAVE}${file}"
         [[ -f "$file_absolute_path" ]] && sudo systemctl status "$file_absolute_path"
+    else
+        file_absolute_path="${USER_SERVICE_SAVE}${file}"
+        [[ -f "$file_absolute_path" ]] && systemctl --user status "$file_absolute_path"
     fi
 }
 
@@ -400,13 +400,13 @@ save_service_file()
     # fi
 
     if [ "$root_user" -ne 0 ]; then
-        check_directory "$USER_SERVICE_SAVE" 1
-        move_file "${service_file}" "${USER_SERVICE_SAVE}${service_file}"
-        print_directory "$USER_SERVICE_SAVE"
-        enter_to_continue
-    else
         check_directory "$SYSTEM_SERVICE_SAVE" 1
         move_file "${service_file}" "${SYSTEM_SERVICE_SAVE}${service_file}"
+        print_directory "$SYSTEM_SERVICE_SAVE"
+        enter_to_continue
+    else
+        check_directory "$USER_SERVICE_SAVE" 1
+        move_file "${service_file}" "${USER_SERVICE_SAVE}${service_file}"
         print_directory "$USER_SERVICE_SAVE"
         enter_to_continue
     fi

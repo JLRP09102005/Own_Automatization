@@ -50,7 +50,7 @@ read_file_coincidencies()
     local file="$1" prefix="$2" sufix="$3" grep_result multiple_coincidences=$4 line="line number"
 
     [[ ! -e "$file" ]] && {
-        print_error "File $file to read from not found" 2 >&2
+        { print_error "File $file to read from not found" 2; } >&2
         return 1
     }
 
@@ -101,9 +101,9 @@ print_directory()
     local path="$1"
 
     if [[ ! -d "$path" ]]; then
-        print_error "This directory doesn't exists, imposible to list content"
+        print_error "This directory doesn't exists, imposible to list content" 2
     else
-        ls -la
+        ls -la "$path"
         enter_to_continue
     fi
 }
@@ -127,7 +127,7 @@ check_directory()
     directory="$1"
     create_ifnot="${2:-0}"
 
-    [[ -z "$directory" ]] && { print_error "No directory specified" 2; return1 1; }
+    [[ -z "$directory" ]] && { print_error "No directory specified" 2; return 1; }
 
     if [[ ! -d "$directory" ]]; then
         if [[ "$create_ifnot" -eq 0 ]]; then

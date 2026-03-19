@@ -25,16 +25,14 @@ for table in "${tables[@]}"; do
     iptables -w 10 -t "$table" -P INPUT DROP >"/dev/null" 2>&1
     iptables -w 10 -t "$table" -P FORWARD DROP >"/dev/null" 2>&1
     iptables -w 10 -t "$table" -P PREROUTING DROP >"/dev/null" 2>&1
-    iptables -w 10 -t "$table" -P POSROUTING DROP >"/dev/null" 2>&1
+    iptables -w 10 -t "$table" -P POSTROUTING DROP >"/dev/null" 2>&1
 
     #default policies ipv6
     ip6tables -w 10 -t "$table" -P OUTPUT DROP >"/dev/null" 2>&1
     ip6tables -w 10 -t "$table" -P INPUT DROP >"/dev/null" 2>&1
     ip6tables -w 10 -t "$table" -P FORWARD DROP >"/dev/null" 2>&1
     ip6tables -w 10 -t "$table" -P PREROUTING DROP >"/dev/null" 2>&1
-    ip6tables -w 10 -t "$table" -P POSROUTING DROP >"/dev/null" 2>&1
-
-    exit 0
+    ip6tables -w 10 -t "$table" -P POSTROUTING DROP >"/dev/null" 2>&1
 
 done
 CONTENT
@@ -82,7 +80,7 @@ iptables_rule_wizzard()
     #Select Protocol
     read -r -p "Select protocol (tcp/udp/icmp/Enter to skip): " procotol
     if [ -n "$protocol" ]; then
-        protocol="-p protocol"
+        protocol="-p $protocol"
     else
         protocol=""
     fi
@@ -214,10 +212,10 @@ iptables_rule_wizzard()
     read -r -p "Is This rule correct? (y/n) [n]: " local_option
     local_option="${local_option:-n}"
     if check_yes_no_response "$local_option"; then
-        printf_info "Writing the rule..." 2
+        print_info "Writing the rule..." 2
         write_rule "$rule"
     else
-        printf_warning "Deleting Rule..." 2
+        print_warning "Deleting Rule..." 2
     fi
 }
 
@@ -228,18 +226,18 @@ save_iptables_file()
 
     # if [[ ! -f "${IPTABLES_FILES_DIR}${iptables_file}" ]]; then
     #     print_error "The entered iptables file doesn't exists" 2
-    #     return 1
+    #     return 1vir
     # fi
 
     if [ "$root_user" -ne 0 ]; then
-        check_directory "$USER_SCRIPT_SAVE" 1
-        move_file "${iptables_file}" "$USER_SCRIPT_SAVE"
-        print_directory "$USER_SERVICE_SAVE"
-        enter_to_continue
-    else
         check_directory "$SYSTEM_SCRIPT_SAVE" 1
         move_file "${iptables_file}" "$SYSTEM_SCRIPT_SAVE"
-        print_directory "$USER_SERVICE_SAVE"
+        print_directory "$SYSTEM_SCRIPT_SAVE"
+        enter_to_continue
+    else
+        check_directory "$USER_SCRIPTS_SAVE" 1
+        move_file "${iptables_file}" "$USER_SCRIPTS_SAVE"
+        print_directory "$USER_SCRIPTS_SAVE"
         enter_to_continue
     fi
 }
