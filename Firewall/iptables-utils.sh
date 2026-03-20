@@ -233,12 +233,10 @@ save_iptables_file()
         check_directory "$SYSTEM_SCRIPT_SAVE" 1
         move_file "${iptables_file}" "$SYSTEM_SCRIPT_SAVE"
         print_directory "$SYSTEM_SCRIPT_SAVE"
-        enter_to_continue
     else
         check_directory "$USER_SCRIPTS_SAVE" 1
         move_file "${iptables_file}" "$USER_SCRIPTS_SAVE"
         print_directory "$USER_SCRIPTS_SAVE"
-        enter_to_continue
     fi
 }
 
