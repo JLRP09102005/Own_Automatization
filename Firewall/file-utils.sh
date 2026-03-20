@@ -13,10 +13,10 @@ SERVICE_SCRIPT="$BASE_DIR/service-utils.sh"
 
 ##User Save Directories
 USER_SERVICE_SAVE="${HOME}/.config/systemd/user/"
-USER_SCRIPTS_SAVE="${HOME}/.local/bin"
+USER_SCRIPTS_SAVE="${HOME}/.local/bin/"
 ##System Save Directories
 SYSTEM_SERVICE_SAVE="/etc/systemd/system/"
-SYSTEM_SCRIPT_SAVE="/usr/local/bin"
+SYSTEM_SCRIPT_SAVE="/usr/local/bin/"
 ##Common Save Directories
 CONFIG_SAVE="$HOME/.local/share/iptables-creator/config.txt"
 

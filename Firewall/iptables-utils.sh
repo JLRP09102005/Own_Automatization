@@ -223,6 +223,9 @@ iptables_rule_wizzard()
 save_iptables_file()
 {
     local iptables_file="$SYS_FILE"
+    local service_name
+
+    service_name="$(basename "$SYS_FILE")"
 
     # if [[ ! -f "${IPTABLES_FILES_DIR}${iptables_file}" ]]; then
     #     print_error "The entered iptables file doesn't exists" 2
@@ -231,11 +234,11 @@ save_iptables_file()
 
     if [ "$root_user" -ne 0 ]; then
         check_directory "$SYSTEM_SCRIPT_SAVE" 1
-        move_file "${iptables_file}" "$SYSTEM_SCRIPT_SAVE"
+        move_file "$iptables_file" "${SYSTEM_SCRIPT_SAVE}${service_name}"
         print_directory "$SYSTEM_SCRIPT_SAVE"
     else
         check_directory "$USER_SCRIPTS_SAVE" 1
-        move_file "${iptables_file}" "$USER_SCRIPTS_SAVE"
+        move_file "$iptables_file" "${USER_SCRIPTS_SAVE}${service_name}"
         print_directory "$USER_SCRIPTS_SAVE"
     fi
 }
