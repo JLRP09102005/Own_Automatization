@@ -391,8 +391,7 @@ show_iptables_service_state()
 #====== SERVICE SAVE ======
 save_service_file()
 {
-    local service_file
-    service_file="$(basename "$SERVICE_FILE")"
+    local service_file="$SERVICE_FILE"
 
     # if [[ ! -f "${SERVICE_FILES_DIR}${service_file}" ]]; then
     #     print_error "The entered service file doesn't exists" 2
