@@ -34,7 +34,7 @@ Before=graphical.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=$USER_SCRIPTS_SAVE/$(basename "$SYS_FILE")
+ExecStart=${USER_SCRIPTS_SAVE}$(basename "$SYS_FILE")
 TimeoutStartSec=120
 StandardOutput=journal
 StandardError=journal
@@ -53,7 +53,7 @@ Before=graphical.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=$SYSTEM_SCRIPT_SAVE/$(basename "$SYS_FILE")
+ExecStart=${SYSTEM_SCRIPT_SAVE}$(basename "$SYS_FILE")
 TimeoutStartSec=120
 StandardOutput=journal
 StandardError=journal
