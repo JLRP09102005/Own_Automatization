@@ -24,7 +24,7 @@ write_service()
 create_default_service()
 {
     if [[ "$root_user" -ne 0 ]]; then
-        write_service << 'CONTENT'
+        write_service << CONTENT
 [Unit]
 Description=Service for iptables rules
 After=network-online.target NetworkManager-wait-online-initrd.service NetworkManager.service
@@ -34,7 +34,7 @@ Before=graphical.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/local/bin/iptables-rules.sh
+ExecStart=$USER_SCRIPTS_SAVE/$(basename "$SYS_FILE")
 TimeoutStartSec=120
 StandardOutput=journal
 StandardError=journal
@@ -43,7 +43,7 @@ StandardError=journal
 WantedBy=multi-user.target
 CONTENT
     else
-        write_service << 'CONTENT'
+        write_service << CONTENT
 [Unit]
 Description=Service for iptables rules
 After=network-online.target NetworkManager-wait-online-initrd.service NetworkManager.service
@@ -53,7 +53,7 @@ Before=graphical.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/local/bin/iptables-rules.sh
+ExecStart=$SYSTEM_SCRIPT_SAVE/$(basename "$SYS_FILE")
 TimeoutStartSec=120
 StandardOutput=journal
 StandardError=journal
