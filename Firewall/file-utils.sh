@@ -134,9 +134,13 @@ check_directory()
             print_error "The entered directory doesn't exists" 2
             return 1
         else
-            mkdir -p "$directory"
-            print_warning "The entered directory doesn't exists, creating the directory..." 2
-            return 0
+            if mkdir -p "$directory"; then
+                print_warning "The entered directory doesn't exists, creating the directory..." 2
+                return 0
+            else
+                print_error "Failed to create directory $directory" 2
+                return 1
+            fi
         fi
     else
         print_info "The entered directory exists :)" 2
