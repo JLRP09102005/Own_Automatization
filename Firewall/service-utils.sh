@@ -425,10 +425,14 @@ save_service_file()
     if [ "$root_user" -ne 0 ]; then
         check_directory "$SYSTEM_SERVICE_SAVE" 1
         move_file "$service_file" "${SYSTEM_SERVICE_SAVE}${service_name}"
+        grant_file_permissions "${SYSTEM_SERVICE_SAVE}${service_name}" 644
+
         print_directory "$SYSTEM_SERVICE_SAVE"
     else
         check_directory "$USER_SERVICE_SAVE" 1
         move_file "$service_file" "${USER_SERVICE_SAVE}${service_name}"
+        grant_file_permissions "${USER_SERVICE_SAVE}${service_name}" 644
+        
         print_directory "$USER_SERVICE_SAVE"
     fi
 }

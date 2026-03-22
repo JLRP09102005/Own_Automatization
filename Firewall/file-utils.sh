@@ -118,6 +118,24 @@ move_file()
     [[ -f "$origin_file" ]] && mv "$origin_file" "$dest_file"
 }
 
+grant_file_permissions()
+{
+    local file_path octal_permissions
+
+    file_path="$1"
+    octal_permissions="$2"
+
+    [[ ! -f "$file_path" ]] && { print_error "The given file to grant permissions doesn't exists" 2; return 1; }
+    ! check_only_numbers "$octal_permissions" && { print_error "The given octal number for file permissions is not correct" 2; return 1; }
+    if [[ "$octal_permissions" -gt 777 ]]; then print_error "The given ocatl number is greater than 777"; return 1; fi
+
+    if [[ "$root_user" -ne 0 ]]; then
+        sudo chmod "$octal_permissions" "$file_path"
+    else
+        chmod "$octal_permissions" "$file_path"
+    fi
+}
+
 #====== DIRECTORY CHECKING ======
 ## check_directory <path> [create=0]
 ## Returns 0 if exists, 1 if not (or fails to create).
