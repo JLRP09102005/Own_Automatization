@@ -326,6 +326,15 @@ configure_install_wizzard()
 }
 
 #====== SERVICE STATE ======
+daemon_reload()
+{
+    if [[ "$root_user" -ne 0 ]]; then
+        sudo systemctl daemon-reload
+    else
+        systemctl --user daemon-reload
+    fi
+}
+
 start_iptables_service()
 {
     local service_name
@@ -435,4 +444,6 @@ save_service_file()
         
         print_directory "$USER_SERVICE_SAVE"
     fi
+
+    daemon_reload
 }

@@ -245,6 +245,8 @@ save_iptables_file()
         
         print_directory "$USER_SCRIPTS_SAVE"
     fi
+
+    daemon_reload
 }
 
 #====== IPTABLES PRINT ======
